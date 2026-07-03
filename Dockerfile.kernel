@@ -2,10 +2,12 @@ FROM elyra/kernel-tf-gpu-py:3.3.0
 
 USER root
 
-# PyTorch (CUDA 12.1 wheels; forward-compatible with the CUDA 12.3 host driver)
+# PyTorch cu128 wheels: RTX PRO 4000 Blackwell needs sm_120 kernels, which
+# only ship starting with the cu124+/cu128 builds. cu121 lacks sm_120 entirely
+# ("no kernel image is available for execution on the device").
 # + classic ML/DL/CV stack. tensorflow/keras/numpy already present in the base image.
 RUN pip install --no-cache-dir \
-    torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu121 \
+    torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu128 \
     && pip install --no-cache-dir \
         opencv-python-headless \
         scikit-learn \
