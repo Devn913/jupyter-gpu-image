@@ -1,0 +1,21 @@
+FROM elyra/kernel-tf-gpu-py:3.3.0
+
+USER root
+
+# PyTorch (CUDA 12.1 wheels; forward-compatible with the CUDA 12.3 host driver)
+# + classic ML/DL/CV stack. tensorflow/keras/numpy already present in the base image.
+RUN pip install --no-cache-dir \
+    torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu121 \
+    && pip install --no-cache-dir \
+        opencv-python-headless \
+        scikit-learn \
+        scikit-image \
+        pandas \
+        matplotlib \
+        seaborn \
+        xgboost \
+        lightgbm \
+        transformers \
+        timm
+
+USER ${NB_UID}
